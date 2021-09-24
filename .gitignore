@@ -1,0 +1,30 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/Project Template/v16
+*.meta
+/UserSettings
+/Temp
+/ProjectSettings
+/Packages
+/obj/Debug
+/Logs
+/Library
+/project-share.sln
+/Project Template.sln
+/AutoInstaller.Editor.csproj
+/Assembly-CSharp.csproj
+/Assembly-CSharp-firstpass.csproj
+/Assembly-CSharp-Editor.csproj
+/.vsconfig
+/Assets/RPG Monster Wave Polyart
+/Assets/Resources
+/Assets/Plugins/Demigiant/DOTween
+/Assets/ModularRPGHeroesPolyArt
+/Assets/Libs/URP
+/Assets/Interface and Item Sounds
+/Assets/Fantastic Village Pack
+/Assets/FANTASTIC - Village Pack
+/Assets/Emerald AI
+/Assets/64 flat icons
