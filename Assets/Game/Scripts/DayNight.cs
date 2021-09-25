@@ -17,7 +17,7 @@ public class DayNight : MonoBehaviour
         {
             toggleDay = !toggleDay;
             RenderSettings.skybox = toggleDay ? dayMat : nightMat;
-            directionalLight.color = toggleDay ? Color.white : Color.grey;
+            directionalLight.color = toggleDay ? Color.white : Color.black;
         }
     }
 }
