@@ -11,10 +11,18 @@ public class PlayerAttackArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("OnTriggerEnter " + other.transform.name);
         if (other.transform.TryGetComponent(out TreeController tree))
         {
+            Debug.Log("OnTriggerEnter " + other.transform.name);
             tree.TakeDamage();
+        }
+
+        if (other.TryGetComponent(out InvisibleSlime slime))
+        {
+            if (!slime.isHidden)
+            {
+                slime.TakeDamage();
+            }
         }
     }
 }

@@ -10,6 +10,8 @@ public class TreeController : MonoBehaviour
     public GameObject woodResourcePrefab;
     public int hp = 3;
 
+    public AudioSource hitAudio;
+
     private void Awake()
     {
         GetComponent<CapsuleCollider>().enabled = true;
@@ -31,6 +33,8 @@ public class TreeController : MonoBehaviour
 
     public void TakeDamage()
     {
+        hitAudio.Play();
+
         --hp;
         if (hp <= 0)
         {
@@ -52,7 +56,7 @@ public class TreeController : MonoBehaviour
         }
         else
         {
-            transform.DOShakeRotation(0.25f, 5f);
+            transform.DOShakeRotation(0.25f, 15f);
         }
     }
 

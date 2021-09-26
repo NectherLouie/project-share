@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class WoodResource : MonoBehaviour
 {
+    public AudioSource collect;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Player player))
         {
-            player.AddWoodCount();
-            Destroy(gameObject, 0.01f);
+            if (!player.hasLampInBack)
+            {
+                collect.Play();
+                player.AddWoodCount();
+                Destroy(gameObject, 0.1f);
+            }
         }
     }
 }
