@@ -12,9 +12,9 @@ public class WoodResource : MonoBehaviour
         {
             if (!player.hasLampInBack)
             {
-                collect.Play();
+                //collect.Play();
                 player.AddWoodCount();
-                Destroy(gameObject, 0.1f);
+                Destroy(gameObject);
             }
         }
     }

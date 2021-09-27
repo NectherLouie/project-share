@@ -21,13 +21,20 @@ public class Player : MonoBehaviour
     public bool buildLamp;
     public bool placeLamp;
     public GameObject lanternPrefab;
+    public bool canPickup;
+    public bool pickup;
+    public List<Lantern> lanternsToPickup = new List<Lantern>();
 
     public bool hasWoodInBack;
     public bool hasLampInBack;
 
     public AudioSource replenishAudio;
     public AudioSource buildAudio;
+    public AudioSource buildErrorAudio;
     public AudioSource placeAudio;
+    public AudioSource pickupAudio;
+    public AudioSource lampCollectAudio;
+    public AudioSource woodCollectAudio;
 
     private void Start()
     {
@@ -68,7 +75,9 @@ public class Player : MonoBehaviour
         if (canBuildLamp)
         {
             buildLamp = Input.GetButtonDown("Jump");
-            if (buildLamp && gameData.playerWoodCount > 0)
+            bool hasHitMax = (gameData.playerLampCount + gameData.lampCount) >= gameData.lampMaxCount;
+            bool canAffordBuild = gameData.playerWoodCount >= gameData.lampCost;
+            if (buildLamp && gameData.playerWoodCount > 0 && canAffordBuild && !hasHitMax)
             {
                 Debug.Log("Build Lamp");
                 buildAudio.Play();
@@ -87,6 +96,23 @@ public class Player : MonoBehaviour
 
                 craftingDesk.BuildLamp();
             }
+            
+            if (hasHitMax)
+            {
+                if (!buildErrorAudio.isPlaying)
+                    buildErrorAudio.Play();
+            }
+        }
+
+        if (canPickup)
+        {
+            pickup = Input.GetButtonDown("Fire3");
+            if (pickup && lanternsToPickup.Count > 0 && !hasWoodInBack)
+            {
+                Destroy(lanternsToPickup[0].gameObject);
+                lanternsToPickup.Clear();
+                AddLampCount();
+            }
         }
     
         if (gameData.playerLampCount > 0 && gameData.fireStrength > 0)
@@ -100,6 +126,7 @@ public class Player : MonoBehaviour
                 Instantiate(lanternPrefab, transform.position, Quaternion.identity);
                 
                 gameData.playerLampCount -= 1;
+                gameData.lampCount += 1;
 
                 if (gameData.playerLampCount <= 0)
                 {
@@ -124,6 +151,8 @@ public class Player : MonoBehaviour
     {
         if (!hasLampInBack)
         {
+            woodCollectAudio.Play();
+
             gameData.playerWoodCount += gameData.playAddWoodCount;
 
             resourceCount.SetActive(true);
@@ -137,6 +166,8 @@ public class Player : MonoBehaviour
 
     public void AddLampCount()
     {
+        lampCollectAudio.Play();
+
         gameData.playerLampCount += 1;
         resourceCount.SetActive(true);
         UpdateResourceCount(gameData.playerLampCount);
@@ -158,11 +189,31 @@ public class Player : MonoBehaviour
 
     public void EnableCanBuildLamp()
     {
-        canBuildLamp = true;
+        bool hasHitMax = (gameData.playerLampCount + gameData.lampCount) >= gameData.lampMaxCount;
+
+        if (!hasHitMax)
+            canBuildLamp = true;
     }
 
     public void DisableCanBuildLamp()
     {
         canBuildLamp = false;
+    }
+
+    public void EnableCanPickup(string key, Lantern value)
+    {
+        if (lanternsToPickup.Count == 0)
+        {
+            lanternsToPickup.Add(value);
+        }
+
+        canPickup = true;
+    }
+
+    public void DisableCanPickup(string key)
+    {
+        lanternsToPickup.Clear();
+
+        canPickup = false;
     }
 }

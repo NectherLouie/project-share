@@ -31,6 +31,11 @@ public class Lantern : MonoBehaviour
             Debug.Log("Lantern Slime Collided");
             slime.ShowSlime(true);
         }
+
+        if (other.TryGetComponent(out Player player))
+        {
+            player.EnableCanPickup(gameObject.GetInstanceID() + "_", this);
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -40,6 +45,11 @@ public class Lantern : MonoBehaviour
             Debug.Log("Lantern Slime Stay");
             slime.ShowSlime(false);
         }
+
+        if (other.TryGetComponent(out Player player))
+        {
+            player.EnableCanPickup(gameObject.GetInstanceID() + "_", this);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -48,6 +58,11 @@ public class Lantern : MonoBehaviour
         {
             Debug.Log("Hide Slime");
             slime.HideSlime();
+        }
+
+        if (other.TryGetComponent(out Player player))
+        {
+            player.DisableCanPickup(gameObject.GetInstanceID() + "_");
         }
     }
 }

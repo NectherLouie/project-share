@@ -14,7 +14,9 @@ public class GameData : ScriptableObject
     public float fireMultiplier = 4;
 
     public int playerLampCount = 0;
-    public int lampCost = 5;
+    public int lampCost = 20;
+    public int lampCount = 0;
+    public int lampMaxCount = 8;
 
     public void Reset()
     {
@@ -26,7 +28,9 @@ public class GameData : ScriptableObject
         fireMultiplier = 4;
 
         playerLampCount = 0;
-        lampCost = 5;
+        lampCost = 10;
+        lampCount = 0;
+        lampMaxCount = 8;
     }
 
     public void ReplenishCampfire()

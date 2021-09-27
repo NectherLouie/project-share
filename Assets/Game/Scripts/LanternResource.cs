@@ -12,9 +12,9 @@ public class LanternResource : MonoBehaviour
         {
             if (!player.hasWoodInBack)
             {
-                collect.Play();
+                //collect.Play();
                 player.AddLampCount();
-                Destroy(gameObject, 0.1f);
+                Destroy(gameObject);
             }
         }
     }

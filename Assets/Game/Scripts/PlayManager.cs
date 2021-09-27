@@ -8,6 +8,7 @@ public class PlayManager : MonoBehaviour
 
     private void Awake()
     {
+        TitlePanelController.isTitleActive = true;
         gameData.Reset();
     }
 }

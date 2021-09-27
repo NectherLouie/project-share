@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 using DG.Tweening;
 
 public class InvisibleSlime : MonoBehaviour
@@ -11,6 +12,7 @@ public class InvisibleSlime : MonoBehaviour
     public SphereCollider sphereCollider;
     public GameObject model;
     public Material inviMaterial;
+    public GameObject pointLight;
 
     public int waypointIndex;
     public Transform[] waypoints = { };
@@ -22,6 +24,7 @@ public class InvisibleSlime : MonoBehaviour
 
     private int WalkTriggerHash;
     private bool isCoroutineStarted = false;
+    public Mb.FadePanelController fpController;
 
     private void Awake()
     {
@@ -32,6 +35,8 @@ public class InvisibleSlime : MonoBehaviour
         agent.ResetPath();
         agent.SetDestination(waypoints[waypointIndex].position);
         animator.SetTrigger(WalkTriggerHash);
+
+        fpController = FindObjectOfType<Mb.FadePanelController>();
     }
 
     private void FixedUpdate()
@@ -73,6 +78,8 @@ public class InvisibleSlime : MonoBehaviour
         c.a = 255f;
         inviMaterial.color = c;
 
+        pointLight.SetActive(true);
+
         isHidden = false;
     }
 
@@ -82,6 +89,8 @@ public class InvisibleSlime : MonoBehaviour
         Color c = inviMaterial.color;
         c.a = 0;
         inviMaterial.color = c;
+
+        pointLight.SetActive(false);
 
         isHidden = true;
     }
@@ -115,6 +124,13 @@ public class InvisibleSlime : MonoBehaviour
 
     private void OnDeads()
     {
-        Destroy(gameObject, 0.1f);
+        fpController.OnFadeComplete += OnFadeInComplete;
+        fpController.FadeIn();
+    }
+
+    void OnFadeInComplete()
+    {
+        fpController.OnFadeComplete -= OnFadeInComplete;
+        SceneManager.LoadScene((int)SceneIndices.COMPLETE);
     }
 }
