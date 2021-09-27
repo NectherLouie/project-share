@@ -51,7 +51,11 @@ public class Player : MonoBehaviour
             if (replenishCampfire && gameData.playerWoodCount > 0 && !hasLampInBack)
             {
                 Debug.Log("Replenish Campfire");
-                replenishAudio.Play();
+                
+                if (!replenishAudio.isPlaying)
+                {
+                    replenishAudio.Play();
+                }
 
                 if (gameData.fireStrength <= 0) // just once
                 {
@@ -74,6 +78,8 @@ public class Player : MonoBehaviour
 
         if (canBuildLamp)
         {
+            Debug.Log("Max: " + (gameData.playerLampCount + gameData.lampCount));
+
             buildLamp = Input.GetButtonDown("Jump");
             bool hasHitMax = (gameData.playerLampCount + gameData.lampCount) >= gameData.lampMaxCount;
             bool canAffordBuild = gameData.playerWoodCount >= gameData.lampCost;
@@ -110,6 +116,7 @@ public class Player : MonoBehaviour
             if (pickup && lanternsToPickup.Count > 0 && !hasWoodInBack)
             {
                 Destroy(lanternsToPickup[0].gameObject);
+                gameData.lampCount -= 1;
                 lanternsToPickup.Clear();
                 AddLampCount();
             }
